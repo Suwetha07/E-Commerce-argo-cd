@@ -86,7 +86,7 @@ mongodb:
     repository: "mongo"
     tag: "6.0"
   storageClass:
-    name: "nfs-client"
+    name: "csi-standard"
 
 storageClass:
   ebs:
