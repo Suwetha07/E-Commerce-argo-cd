@@ -1,0 +1,25 @@
+# =============================================================
+# APP-OF-APPS PATTERN
+# This is the ONLY manifest you apply to the cluster manually.
+# ArgoCD discovers and manages both clahan + clahanstore apps.
+# =============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ecommerce-app-of-apps
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/M-VIGNESH3/E-Commerce-ArgoCD.git'
+    targetRevision: main
+    path: apps
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

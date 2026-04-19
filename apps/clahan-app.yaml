@@ -1,0 +1,33 @@
+# =============================================================
+# ArgoCD Application — CLAHAN Namespace (NEW)
+# Deploys ALL 17 microservices into the 'clahan' namespace
+# =============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: clahan-ecommerce
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/part-of: ecommerce-platform
+    environment: clahan
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/M-VIGNESH3/E-Commerce-ArgoCD.git'
+    targetRevision: main
+    path: helm-chart
+    helm:
+      valueFiles:
+        - values-clahan.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: clahan
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

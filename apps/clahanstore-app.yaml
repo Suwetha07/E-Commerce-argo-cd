@@ -1,0 +1,33 @@
+# =============================================================
+# ArgoCD Application — CLAHANSTORE Namespace (EXISTING)
+# Deploys ALL 17 microservices into the 'clahanstore' namespace
+# =============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: clahanstore-ecommerce
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/part-of: ecommerce-platform
+    environment: clahanstore
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/M-VIGNESH3/E-Commerce-ArgoCD.git'
+    targetRevision: main
+    path: helm-chart
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: clahanstore
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
