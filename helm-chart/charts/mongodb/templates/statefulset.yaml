@@ -34,7 +34,7 @@ spec:
       name: mongodata
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: ebs-sc
+      storageClassName: {{ .Values.storageClass.name }}
       resources:
         requests:
           storage: 1Gi

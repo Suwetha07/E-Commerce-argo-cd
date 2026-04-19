@@ -92,10 +92,6 @@ mongodb:
 
 storageClass:
   ebs:
-    enabled: true
-    name: "ebs-sc"
-    isDefault: "true"
-    provisioner: "ebs.csi.aws.com"
-    volumeBindingMode: "WaitForFirstConsumer"
-    parameters:
-      type: "gp3"
+    enabled: false
+    isDefault: "false"
+  name: "nfs-client"
