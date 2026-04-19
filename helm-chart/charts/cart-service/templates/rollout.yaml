@@ -1,38 +1,50 @@
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
-  name: inventory-service
+  name: cart-service
   namespace: {{ .Values.global.namespace }}
 spec:
-  serviceName: inventory-service
   replicas: {{ .Values.replicas }}
-  updateStrategy:
-    type: RollingUpdate
+  strategy:
+    blueGreen:
+      activeService: cart-service
+      previewService: cart-service-preview
+      autoPromotionEnabled: false
   selector:
     matchLabels:
-      app: inventory-service
+      app: cart-service
   template:
     metadata:
       labels:
-        app: inventory-service
+        app: cart-service
     spec:
       initContainers:
       - name: wait-for-mongodb
         image: busybox:1.36
         command: ['sh', '-c', 'echo "Waiting for MongoDB..."; until nc -z mongodb 27017; do sleep 2; done; echo "MongoDB is ready!"']
       containers:
-      - name: inventory-service
+      - name: cart-service
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
-        - containerPort: 3005
+        - containerPort: 3006
         env:
         - name: PORT
-          value: '3005'
+          value: '3006'
+        - name: PRODUCT_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: clahanstore-config
+              key: PRODUCT_SERVICE_URL
+        - name: INVENTORY_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: clahanstore-config
+              key: INVENTORY_SERVICE_URL
         - name: MONGO_URI
           valueFrom:
             secretKeyRef:
               name: clahanstore-secrets
-              key: MONGO_URI_INVENTORY
+              key: MONGO_URI_CART
         resources:
           requests:
             cpu: 25m
@@ -43,7 +55,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 3005
+            port: 3006
           initialDelaySeconds: 15
           periodSeconds: 20
           timeoutSeconds: 5
@@ -51,7 +63,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /health
-            port: 3005
+            port: 3006
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 3

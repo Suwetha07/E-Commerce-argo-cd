@@ -1,31 +1,28 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
-  name: api-gateway
+  name: frontend-ui
   namespace: {{ .Values.global.namespace }}
 spec:
   replicas: {{ .Values.replicas }}
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
+    blueGreen:
+      activeService: frontend-ui
+      previewService: frontend-ui-preview
+      autoPromotionEnabled: false
   selector:
     matchLabels:
-      app: api-gateway
+      app: frontend-ui
   template:
     metadata:
       labels:
-        app: api-gateway
+        app: frontend-ui
     spec:
       containers:
-      - name: api-gateway
+      - name: frontend-ui
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
-        - containerPort: 3000
-        envFrom:
-        - configMapRef:
-            name: clahanstore-config
+        - containerPort: 80
         resources:
           requests:
             cpu: 25m
@@ -35,16 +32,16 @@ spec:
             memory: 256Mi
         livenessProbe:
           httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 15
+            path: /
+            port: 80
+          initialDelaySeconds: 10
           periodSeconds: 20
           timeoutSeconds: 5
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /health
-            port: 3000
+            path: /
+            port: 80
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 3

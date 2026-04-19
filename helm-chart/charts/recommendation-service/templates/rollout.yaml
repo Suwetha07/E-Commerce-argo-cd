@@ -1,48 +1,55 @@
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
-  name: cart-service
+  name: recommendation-service
   namespace: {{ .Values.global.namespace }}
 spec:
-  serviceName: cart-service
   replicas: {{ .Values.replicas }}
-  updateStrategy:
-    type: RollingUpdate
+  strategy:
+    blueGreen:
+      activeService: recommendation-service
+      previewService: recommendation-service-preview
+      autoPromotionEnabled: false
   selector:
     matchLabels:
-      app: cart-service
+      app: recommendation-service
   template:
     metadata:
       labels:
-        app: cart-service
+        app: recommendation-service
     spec:
       initContainers:
       - name: wait-for-mongodb
         image: busybox:1.36
         command: ['sh', '-c', 'echo "Waiting for MongoDB..."; until nc -z mongodb 27017; do sleep 2; done; echo "MongoDB is ready!"']
       containers:
-      - name: cart-service
+      - name: recommendation-service
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
-        - containerPort: 3006
+        - containerPort: 3013
         env:
         - name: PORT
-          value: '3006'
+          value: '3013'
+        - name: USER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: clahanstore-config
+              key: USER_SERVICE_URL
         - name: PRODUCT_SERVICE_URL
           valueFrom:
             configMapKeyRef:
               name: clahanstore-config
               key: PRODUCT_SERVICE_URL
-        - name: INVENTORY_SERVICE_URL
+        - name: ORDER_SERVICE_URL
           valueFrom:
             configMapKeyRef:
               name: clahanstore-config
-              key: INVENTORY_SERVICE_URL
+              key: ORDER_SERVICE_URL
         - name: MONGO_URI
           valueFrom:
             secretKeyRef:
               name: clahanstore-secrets
-              key: MONGO_URI_CART
+              key: MONGO_URI_RECOMMENDATION
         resources:
           requests:
             cpu: 25m
@@ -53,7 +60,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 3006
+            port: 3013
           initialDelaySeconds: 15
           periodSeconds: 20
           timeoutSeconds: 5
@@ -61,7 +68,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /health
-            port: 3006
+            port: 3013
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 3

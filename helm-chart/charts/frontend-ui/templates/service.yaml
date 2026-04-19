@@ -10,3 +10,16 @@ spec:
   - port: 80
     targetPort: 80
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-ui-preview
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    app: frontend-ui
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

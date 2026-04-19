@@ -10,3 +10,16 @@ spec:
   ports:
   - port: 3010
     targetPort: 3010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoice-service-preview
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    app: invoice-service
+  ports:
+  - port: 80
+    targetPort: 3010
+  type: ClusterIP
