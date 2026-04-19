@@ -89,9 +89,5 @@ mongodb:
   image:
     repository: "mongo"
     tag: "6.0"
-
-storageClass:
-  ebs:
-    enabled: false
-    isDefault: "false"
-  name: "nfs-client"
+  storageClass:
+    name: "nfs-client"
