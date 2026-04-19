@@ -3,6 +3,8 @@ kind: Gateway
 metadata:
   name: ecommerce-gateway
   namespace: {{ .Values.global.namespace }}
+  annotations:
+    gateway.gloo.solo.io/gateway-parameters-name: ecommerce-gateway-params
 spec:
   gatewayClassName: kgateway
   listeners:
