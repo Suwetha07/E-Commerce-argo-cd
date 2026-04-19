@@ -30,57 +30,57 @@ product-service:
     repository: "team4devops/ecommerce-product-service"
     tag: "v1.0.0"
 search-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-search-service"
     tag: "v1.0.0"
 inventory-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-inventory-service"
     tag: "v1.0.0"
 cart-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-cart-service"
     tag: "v1.0.0"
 wishlist-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-wishlist-service"
     tag: "v1.0.0"
 order-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-order-service"
     tag: "v1.0.0"
 payment-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-payment-service"
     tag: "v1.0.0"
 invoice-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-invoice-service"
     tag: "v1.0.0"
 shipping-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-shipping-service"
     tag: "v1.0.0"
 review-rating-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-review-rating-service"
     tag: "v1.0.0"
 recommendation-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-recommendation-service"
     tag: "v1.0.0"
 admin-service:
-  replicas: 1
+  replicas: 0
   image:
     repository: "team4devops/ecommerce-admin-service"
     tag: "v1.0.0"
