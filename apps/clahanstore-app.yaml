@@ -15,7 +15,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/M-VIGNESH3/E-Commerce-ArgoCD.git'
+    repoURL: 'https://github.com/M-VIGNESH3/E-Commerce-argo-cd.git'
     targetRevision: main
     path: helm-chart
     helm:
