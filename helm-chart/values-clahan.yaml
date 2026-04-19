@@ -5,12 +5,12 @@
 global:
   namespace: "clahan"
 api-gateway:
-  replicas: 2
+  replicas: 1
   image:
     repository: "team4devops/ecommerce-api-gateway"
     tag: "v1.0.0"
 frontend-ui:
-  replicas: 2
+  replicas: 1
   image:
     repository: "team4devops/ecommerce-frontend-ui"
     tag: "v1.0.0"
@@ -20,12 +20,12 @@ user-service:
     repository: "team4devops/ecommerce-user-service"
     tag: "v1.0.0"
 auth-service:
-  replicas: 2
+  replicas: 1
   image:
     repository: "team4devops/ecommerce-authentication-service"
     tag: "v1.0.0"
 product-service:
-  replicas: 2
+  replicas: 1
   image:
     repository: "team4devops/ecommerce-product-service"
     tag: "v1.0.0"
