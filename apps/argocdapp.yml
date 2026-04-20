@@ -9,6 +9,9 @@ spec:
     repoURL: https://github.com/Suwetha07/E-Commerce-argo-cd.git
     targetRevision: HEAD
     path: helm-chart
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: clahanstore
