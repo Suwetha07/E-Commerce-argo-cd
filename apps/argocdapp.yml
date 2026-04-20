@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Suwetha07/E-Commerce-argo-cd.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm-chart
     helm:
       valueFiles:
