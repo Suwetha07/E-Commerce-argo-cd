@@ -1,22 +1,20 @@
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ecommerce-blue-green
-  namespace: argocd
+  name: ecommerce-blue-green
+  namespace: argocd
 spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/Suwetha07/E-Commerce-argo-cd.git'
-    targetRevision: HEAD
-    path: ecommerce-microservices/argo-deployments
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: clahanstore
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-
+  project: default
+  source:
+    repoURL: https://github.com/Suwetha07/E-Commerce-argo-cd.git
+    targetRevision: HEAD
+    path: helm-chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: clahanstore
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
