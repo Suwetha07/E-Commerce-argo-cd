@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argo-rollouts-dashboard
+  namespace: argo-rollouts
+  labels:
+    app.kubernetes.io/name: argo-rollouts-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argo-rollouts-dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: argo-rollouts-dashboard
+    spec:
+      containers:
+      - name: dashboard
+        image: argoproj/argo-rollouts:v1.6.0
+        args:
+        - dashboard
+        ports:
+        - containerPort: 3100
+          name: dashboard
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
